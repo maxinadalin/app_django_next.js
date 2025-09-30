@@ -13,6 +13,9 @@ def thumbnail_blog_category(instance,filename):
 
 
 class Category(models.Model):
+    class Meta:
+        verbose_name = "Categoria"
+        verbose_name_plural = "Categorias"
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
     parent = models.ForeignKey("self",related_name="children",on_delete=models.CASCADE,blank=True,null=True)
@@ -60,7 +63,7 @@ class Post(models.Model):
         ordering = ("status","-created_at")
         
     def __str__(self):
-        return self.tittle
+        return self.title
 
 class Heading(models.Model):
     
