@@ -22,7 +22,7 @@ COPY requirements.txt /apps/requirements.txt
 RUN pip install -r requirements.txt
 
 # copy the application to the working directory
-COPY ./apps /apps
+COPY . /apps
 
 #start the SSH tunnel
 

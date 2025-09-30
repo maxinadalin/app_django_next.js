@@ -15,9 +15,9 @@ def thumbnail_blog_category(instance,filename):
 class Category(models.Model):
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
-    parent = models.ForeignKey(self,related_name="children",on_delete=models.CASCADE,blank=True,null=True)
-    name = models.models.CharField(max_length=50)
-    title = models.models.CharField(max_length=50)
+    parent = models.ForeignKey("self",related_name="children",on_delete=models.CASCADE,blank=True,null=True)
+    name = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
     description = models.TextField()
     thumbnail = models.ImageField(upload_to=thumbnail_blog_category)
     slug = models.CharField(max_length=50)
@@ -35,8 +35,8 @@ class Post(models.Model):
             return super().get_queryset().filter(status="published")
     
     status_options = (
-        ("draft", "Draft")
-        ("published", "Published")
+        ("draft", "Draft"),
+        ("published", "Published"),
     )
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
@@ -57,7 +57,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     
     class Meta:
-        ordering = ("-published")
+        ordering = ("status","-created_at")
         
     def __str__(self):
         return self.tittle
