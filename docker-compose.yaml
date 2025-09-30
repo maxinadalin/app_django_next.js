@@ -3,13 +3,16 @@ services:
   backend:
     container_name: django
     build: .
-    command: uvicorn Core.asgi:application --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn core.asgi:application --host 0.0.0.0 --port 8000 --reload
     volumes: 
      - .:/app
     ports:
      - 8000:8000
     depends_on:
      - django_redis
+    environment:
+      PYTHONPATH: /app
+
 
 
   #redis

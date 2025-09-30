@@ -33,9 +33,9 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Core',
+    'core',
 ]
-PROJECT_APPS = []
+PROJECT_APPS = ['apps.blog']
 MEDICAL_APPS = []
 # en este array lo qe hacemos es instalar todo lo que instalamos en el requirements.txt
 THIRD_PARTY_APPS=[
@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'Core.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
@@ -79,8 +79,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Core.wsgi.application'
-ASGI_APPLICATION = 'Core.asgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
+ASGI_APPLICATION = 'core.asgi.application'
 
 
 # Database
@@ -135,6 +135,10 @@ USE_TZ = True
 STATIC_LOCATION = "static"
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

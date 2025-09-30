@@ -11,18 +11,18 @@ ENV PYTHONUNBUFFERED 1
 
 #set the working directory
 
-WORKDIR /app
+WORKDIR /apps
 
 #copy requirements.txt file
 
-COPY requirements.txt /app/requirements.txt
+COPY requirements.txt /apps/requirements.txt
 
 #install python depencies
 
 RUN pip install -r requirements.txt
 
 # copy the application to the working directory
-COPY ./app /app
+COPY ./apps /apps
 
 #start the SSH tunnel
 
