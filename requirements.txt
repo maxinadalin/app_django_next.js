@@ -8,7 +8,7 @@ channels-redis==4.3.0
 django-redis==6.0.0
 Pillow==11.3.0 #para trabajar con imagenes
 # django-storages==1.14.6 #para poder guardar cosas en aws
-# django-ckeditor-5==0.2.18 #poder hacer mas dinamicos los codigos
+django-ckeditor-5==0.2.18 #poder hacer mas dinamicos los codigos
 psycopg2==2.9.4 #para trabajar con postgres sql
 
 # social-auth-app-django==5.5.1
@@ -19,3 +19,4 @@ psycopg2==2.9.4 #para trabajar con postgres sql
 whitenoise==6.11.0
 # requests==2.32.4
 # djoser==2.3.3
+watchfiles>=0.20.0

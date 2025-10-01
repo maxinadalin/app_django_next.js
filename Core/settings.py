@@ -46,10 +46,64 @@ THIRD_PARTY_APPS=[
     # 'social_django',
     # 'rest_framework_simplejwt',
     # 'rest_framework_simplejwt.token_blacklist',
-    # 'django_ckeditor_5'
+    'django_ckeditor_5',
+    # 'ckeditor_uploader',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + MEDICAL_APPS + THIRD_PARTY_APPS
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': {
+            'items': [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', 'highlight', '|',
+                'link', 'imageUpload', 'mediaEmbed', 'codeBlock', 'code', '|',
+                'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent', '|',
+                'blockQuote', 'insertTable', 'horizontalLine', 'specialCharacters', '|',
+                'undo', 'redo', 'removeFormat', 'selectAll', 'findAndReplace'
+            ],
+            'shouldNotGroupWhenFull': True
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Párrafo', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Título 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Título 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Título 3', 'class': 'ck-heading_heading3'}
+            ]
+        },
+        'image': {
+            'toolbar': [
+                'imageTextAlternative',
+                'imageStyle:inline',
+                'imageStyle:wrapText',
+                'imageStyle:breakText',
+                'imageStyle:side',
+                'toggleImageCaption'
+            ],
+            'styles': ['full', 'side', 'inline']
+        },
+        'table': {
+            'contentToolbar': [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells',
+                'splitTableCell',
+                'toggleTableCaption'
+            ]
+        },
+        'mediaEmbed': {
+            'previewsInData': True
+        },
+       
+        
+        'placeholder': 'Escribe tu contenido aquí...',
+        'language': 'es',
+        'removePlugins': ['Title']
+    }
+}
+CKEDITOR_UPLOAD_PATH = "/media/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
