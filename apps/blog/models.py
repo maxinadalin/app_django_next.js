@@ -3,6 +3,7 @@ from django.utils import timezone
 import uuid
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
+from rest_framework import serializers
 
 
 # Create your models here.
@@ -61,11 +62,20 @@ class Post(models.Model):
     
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     
+    view = serializers.IntegerField(read_only=True, default=0)
+    
     class Meta:
         ordering = ("status","-created_at")
         
     def __str__(self):
         return self.title
+
+class PostViews(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
+    post = models.ForeignKey(Post,on_delete=models.PROTECT, related_name="postView")
+    ip_address = models.GenericIPAddressField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
 
 class Heading(models.Model):
     

@@ -8,7 +8,7 @@ urlpatterns = [
     
     
     # MODELS BLOG
-    path("api/category/",include("apps.blog.urls")),
+    path("api/posts/",include("apps.blog.urls")),
     
     
     path('admin/', admin.site.urls),
