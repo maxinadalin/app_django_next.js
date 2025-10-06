@@ -4,6 +4,9 @@ import uuid
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 from rest_framework import serializers
+from .utils import get_client_ip
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -60,7 +63,7 @@ class Post(models.Model):
     objects = models.Manager()
     postobject = PostObjects()
     
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     
     
     class Meta:
@@ -71,7 +74,7 @@ class Post(models.Model):
 
 class PostViews(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
-    post = models.ForeignKey(Post,on_delete=models.PROTECT, related_name="post_View")
+    post = models.ForeignKey(Post,on_delete=models.CASCADE, related_name="post_View")
     ip_address = models.GenericIPAddressField()
     timestamp = models.DateTimeField(auto_now_add=True)
     
@@ -80,7 +83,7 @@ class Heading(models.Model):
     
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
-    post = models.ForeignKey(Post,on_delete=models.PROTECT, related_name="heading")
+    post = models.ForeignKey(Post,on_delete=models.CASCADE, related_name="heading")
     title = models.CharField(max_length=100)
     slug = models.CharField(max_length=50)
     
@@ -105,3 +108,44 @@ class Heading(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)    
         
+        
+        
+        
+        
+
+class PostAnalitic(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,editable=False)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE, related_name="post_Analitics")
+    views = models.PositiveIntegerField(default =0)
+    impressions = models.PositiveIntegerField(default =0)
+    clicks= models.PositiveIntegerField(default =0)
+    click_through_rate = models.FloatField(default=0)
+    avg_time_on_page = models.FloatField(default=0)
+    
+    def increment_click(self):
+        self.click +=1
+        self._update_click_through_rate()
+        
+    def _update_click_through_rate(self):
+        if self.impressions > 0:
+            self.click_through_rate = (self.click/self.impressions)*100
+    
+    def increment_impressions(self):
+        self.impressions += 1
+        self._update_click_through_rate()
+        
+    def increment_views(self,request):
+        ip_address = get_client_ip(request)
+        
+        if not PostViews.objects.filter(post=self.post,ip_address=ip_address).exists():
+            self.views += 1
+            self.save()
+    
+    
+    
+    
+    
+@receiver(post_save, sender=Post)
+def _create_post_analitics(sender,instance,created, **kwargs):
+    if created:
+        PostAnalitic.objects.create(post=instance)
