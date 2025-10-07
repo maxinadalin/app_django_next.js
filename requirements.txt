@@ -20,3 +20,5 @@ whitenoise==6.11.0
 # requests==2.32.4
 # djoser==2.3.3
 watchfiles>=0.20.0
+celery==5.5.3
+django-celery-results==2.6.0

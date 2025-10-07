@@ -47,6 +47,7 @@ THIRD_PARTY_APPS=[
     # 'rest_framework_simplejwt',
     # 'rest_framework_simplejwt.token_blacklist',
     'django_ckeditor_5',
+    'django_celery_results'
     # 'ckeditor_uploader',
 ]
 
@@ -226,3 +227,24 @@ CACHES = {
 }
 
 CHANNELLS_ALLOWED_ORIGINS = "http://localhost:3000"
+
+
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "Europe/Madrid"
+
+
+CELERY_BROKER_URL = env("REDIS_URL")
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout' : 3600,
+    'socket_timeout' : 5,
+    'retry_on_timeout' : True
+}
+
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+
+CELERY_IMPORTS = (
+    'core.task',
+)
