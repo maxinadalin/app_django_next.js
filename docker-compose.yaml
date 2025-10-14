@@ -52,3 +52,21 @@ services:
     depends_on:
       - django_redis
       - postgresql
+
+
+#celery beat
+
+  celery_beat:
+    container_name: blog_celery_beat
+    build: .
+    command: >
+      /wait-for-it.sh postgresql:5432 --timeout=30 --strict -- 
+      celery -A core beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+
+    volumes:
+      - .:/apps
+    ports: 
+      - 8002:8002
+    depends_on:
+      - django_redis      
+      - postgresql

@@ -47,7 +47,8 @@ THIRD_PARTY_APPS=[
     # 'rest_framework_simplejwt',
     # 'rest_framework_simplejwt.token_blacklist',
     'django_ckeditor_5',
-    'django_celery_results'
+    'django_celery_results',
+    'django_celery_beat'
     # 'ckeditor_uploader',
 ]
 
@@ -216,6 +217,8 @@ CHANNELS_LAYERS = {
     }
 }
 
+REDIS_HOST = env("REDIS_HOST")
+
 CACHES = {
     "default":{
         "BACKEND": "django_redis.cache.RedisCache",
@@ -248,3 +251,6 @@ CELERY_CACHE_BACKEND = 'default'
 CELERY_IMPORTS = (
     'core.task',
 )
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.scheduler:DatabaseScheduler"
+CELERY_BEAT_SCHEDULER = {}

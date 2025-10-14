@@ -5,6 +5,9 @@ from rest_framework import status, permissions
 from .models import Post,Category,Heading,PostViews
 from .serializers import PostSerializer,CategorySerializer,HeadingSerializer,PostViewSerializer
 from .utils import get_client_ip
+import redis
+from django.conf import settings
+redis_client = redis.StrictRedis(host=settings.REDIS_HOST, port=6379, db=0)
 class GetCategories(APIView):
     permission_classes = (permissions.AllowAny,)
     
@@ -39,3 +42,20 @@ class GetPost(APIView):
             return Response ({"mensaje": serializer.data}, status = status.HTTP_200_OK)
         else:
             return Response({"mensaje": "no se encontraron categorias"}, status = status.HTTP_404_NOT_FOUND)
+        
+        
+        
+
+class PostListViews(APIView):
+    def get(self,request,*args, **kwargs):
+        try:
+            posts = Post.postobject.all()
+            
+            if not posts.exists():
+                raise NotFound(detail="No posts found.")
+            
+            for post in posts:
+                redis_client.incr = PostViewSerializer(posts, many=True).data
+        except Post.DoesNotExist:
+            raise NotFound(detail="No posts found.")
+        

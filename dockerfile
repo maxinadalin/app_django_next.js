@@ -1,29 +1,21 @@
 FROM python:3.12
 
-
-#install ssh client
-
+# Instalar cliente SSH (si lo necesitás)
 RUN apt-get update && apt-get install -y openssh-client
 
-#set enviroment variable
+# Variables de entorno
+ENV PYTHONUNBUFFERED=1
 
-ENV PYTHONUNBUFFERED 1
-
-#set the working directory
-
+# Directorio de trabajo
 WORKDIR /apps
 
-#copy requirements.txt file
-
+# Instalar dependencias
 COPY requirements.txt /apps/requirements.txt
-
-#install python depencies
-
 RUN pip install -r requirements.txt
 
-# copy the application to the working directory
+# ⬇️ Agregar el script de espera
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
+# Copiar el resto del proyecto
 COPY . /apps
-
-#start the SSH tunnel
-
-CMD python manage.py runserver 0.0.0.0:8000
